@@ -21,6 +21,60 @@
 .signboard > div:has(> .status) { text-align: center; }
 .brandmark { display: block; width: auto; height: auto; max-width: 100%; }
 
+/* --- montagem do hambúrguer ---------------------------------------------
+   Palco de proporção fixa: a altura é reservada antes das fotos chegarem,
+   então a montagem nunca empurra o cardápio para baixo. O recorte esconde
+   as camadas enquanto elas estão fora de cena. */
+.build {
+  position: relative; overflow: hidden;
+  width: min(232px, 64%); margin: 0 auto var(--s-3);
+  aspect-ratio: 720 / 840;
+}
+.build--hold { visibility: hidden; }            /* reserva de espaço no shell estático */
+
+.build-floor {
+  position: absolute; left: 50%; bottom: 1%; width: 76%; height: 7%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.6), transparent 72%);
+  filter: blur(5px);
+  transform: translate3d(-50%, 0, 0) scaleX(0.3); opacity: 0;
+}
+.bl {
+  position: absolute; left: 50%; bottom: var(--b); width: var(--w);
+  height: auto; transform-origin: 50% 100%;
+  transform: translate3d(-50%, -270%, 0);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+}
+.build.is-on .bl {
+  will-change: transform;
+  animation: bl-drop 720ms linear both;
+  animation-delay: calc(var(--i) * 115ms);
+}
+.build.is-on .build-floor { animation: bl-floor 560ms ease-out both; animation-delay: 400ms; }
+
+/* cada camada cai com gravidade, amassa ao encostar e devolve o impacto */
+@keyframes bl-drop {
+  0%   { transform: translate3d(-50%, -270%, 0) scaleY(1);
+         animation-timing-function: cubic-bezier(0.5, 0, 0.78, 0.3); }
+  58%  { transform: translate3d(-50%, 0, 0) scaleY(1);
+         animation-timing-function: cubic-bezier(0.3, 0, 0.25, 1); }
+  70%  { transform: translate3d(-50%, 0, 0) scaleY(0.9);
+         animation-timing-function: cubic-bezier(0.2, 0.6, 0.3, 1); }
+  83%  { transform: translate3d(-50%, -7%, 0) scaleY(1.035); }
+  93%  { transform: translate3d(-50%, 0, 0) scaleY(0.985); }
+  100% { transform: translate3d(-50%, 0, 0) scaleY(1); }
+}
+@keyframes bl-floor {
+  0%   { transform: translate3d(-50%, 0, 0) scaleX(0.3); opacity: 0; }
+  100% { transform: translate3d(-50%, 0, 0) scaleX(1); opacity: 1; }
+}
+
+/* sem animação: a montagem já aparece pronta */
+@media (prefers-reduced-motion: reduce) {
+  .bl { transform: translate3d(-50%, 0, 0); }
+  .build-floor { transform: translate3d(-50%, 0, 0) scaleX(1); opacity: 1; }
+  .build.is-on .bl, .build.is-on .build-floor { animation: none; }
+}
+
 /* the wordmark lockup is the h1 — the brand is the page's first heading */
 .lockup { margin: 0; line-height: 0; }
 .lockup img { display: block; width: 100%; max-width: 228px; height: auto; margin: 0 auto; }

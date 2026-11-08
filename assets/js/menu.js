@@ -43,6 +43,7 @@ function render() {
   renderCartBar();
   paintActiveChip();
   armReveal();
+  armBuild();
 }
 
 function signboard() {
@@ -53,6 +54,7 @@ function signboard() {
   return `
   <header class="signboard riveted" id="signboard">
     <span class="rivets-b"></span>
+    ${buildStage()}
     <div class="sign-top">
       <h1 class="lockup">
         <img src="${esc(S.brand.logoDark)}" alt="${esc(S.brand.name)}" width="620" height="290"
@@ -83,6 +85,40 @@ function signboard() {
         ${icon('info', 'icon icon--sm')} Informações</button>
     </div>
   </header>`;
+}
+
+/* A montagem do lanche é decorativa: o nome da casa já está no h1 logo
+   abaixo, então o palco inteiro fica fora da árvore de acessibilidade. */
+function buildStage() {
+  const layers = S.brand.build || [];
+  if (!layers.length) return '';
+  return `
+  <div class="build" id="build" aria-hidden="true">
+    <span class="build-floor"></span>
+    ${layers.map((l, i) => `<img class="bl" src="${esc(l.src)}" alt=""
+      style="--w:${l.w}%;--b:${l.b}%;--i:${i}"
+      decoding="async" fetchpriority="${i < 2 ? 'high' : 'low'}">`).join('')}
+  </div>`;
+}
+
+/* Só começa quando todas as camadas decodificaram — meia montagem é pior que
+   nenhuma. Se alguma falhar ou demorar, solta assim mesmo em 1,2 s. */
+function armBuild() {
+  const stage = document.getElementById('build');
+  if (!stage) return;
+  const imgs = [...stage.querySelectorAll('.bl')];
+  let done = false;
+  const start = () => { if (!done) { done = true; stage.classList.add('is-on'); } };
+  Promise.all(imgs.map((i) => (i.decode ? i.decode().catch(() => {}) : Promise.resolve())))
+    .then(start);
+  setTimeout(start, 1200);
+  // tocar na pilha remonta o lanche
+  stage.addEventListener('click', () => {
+    if (!done) return;
+    stage.classList.remove('is-on');
+    void stage.offsetWidth;
+    stage.classList.add('is-on');
+  });
 }
 
 function mainSlot() {
@@ -299,7 +335,7 @@ function footer() {
     <div class="colofon">
       <p>${esc(S.brand.legal)} · Cardápio digital próprio, sem comissão de marketplace.</p>
       <p style="margin-top:.35rem">Imagens ilustrativas. Bebida alcoólica: venda proibida para menores de 18 anos.
-      <a href="admin.html">Painel do restaurante</a></p>
+</p>
     </div>
   </footer>`;
 }
@@ -352,6 +388,8 @@ function renderCartBar() {
   const t = totals(cart, { mode: 'pickup' });
   if (!cart.length) {
     bar.removeAttribute('data-show');
+    document.getElementById('cart-count').textContent = 'Sacola vazia';
+    document.getElementById('cart-total').textContent = brl(0);
     document.body.removeAttribute('data-cart');
     setTimeout(() => { if (!cart.length) bar.hidden = true; }, 340);
     return;
@@ -595,10 +633,23 @@ function openCart(route) {
     onClose: () => leaveRoute(route),
     onMount(el) {
       const refresh = () => {
-        if (!cart.length) { sh.close(); home(); setTimeout(() => go('#/sacola'), 260); return; }
+        // persiste SEMPRE, inclusive ao esvaziar: antes o retorno antecipado
+        // deixava a barra e o localStorage com o item já removido.
+        persist();
+        if (!cart.length) {
+          el.querySelector('#cart-list').innerHTML = `
+            <div class="empty">
+              ${icon('bag', 'icon')}
+              <h3>A sacola está vazia</h3>
+              <p>Escolha um hambúrguer, um combo ou uma porção e ele aparece aqui.</p>
+              <button class="btn btn--primary" type="button" data-close>Ver o cardápio</button>
+            </div>`;
+          el.querySelector('[data-foot]')?.setAttribute('hidden', '');
+          return;
+        }
+        el.querySelector('[data-foot]')?.removeAttribute('hidden');
         el.querySelector('#cart-list').innerHTML = cartList();
         el.querySelector('#cart-sub').textContent = brl(totals(cart, { mode: 'pickup' }).subtotal);
-        persist();
       };
       el.addEventListener('click', (e) => {
         const b = e.target.closest('[data-ci]');

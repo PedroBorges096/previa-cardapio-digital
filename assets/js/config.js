@@ -34,6 +34,18 @@ export const SEED = {
     intro: 'Smash de 160 g prensado na chapa quente, pão brioche tostado na manteiga e queijo escorrendo pela borda. Hambúrguer de verdade, sem firula.',
     about:
       'A BRASA começou com uma chapa de ferro, um saco de carvão e a teimosia de prensar o hambúrguer no ponto certo. O blend é moído todo dia, o pão vai para a chapa com manteiga e a batata sai do óleo direto para o papel. Nada congelado, nada montado antes da hora.',
+
+    /* Montagem animada do topo. Cada camada cai na ordem desta lista.
+       `w` é a largura em % do palco, `b` a distância da base em %.
+       Lista vazia (ou ausente) = nenhuma animação, o topo fica só com a marca. */
+    build: [
+      { src: 'assets/img/build/bun-b.webp',  w: 90.0,  b: 1.2,  alt: 'pão de baixo' },
+      { src: 'assets/img/build/sauce.webp',  w: 70.0,  b: 14.5, alt: 'maionese da casa' },
+      { src: 'assets/img/build/patty.webp',  w: 92.5,  b: 16.0, alt: 'smash de 160 g' },
+      { src: 'assets/img/build/cheese.webp', w: 93.1,  b: 19.3, alt: 'cheddar' },
+      { src: 'assets/img/build/salad.webp',  w: 87.5,  b: 37.1, alt: 'alface e tomate' },
+      { src: 'assets/img/build/bun-t.webp',  w: 92.5,  b: 51.4, alt: 'pão de cima' },
+    ],
   },
 
   /* role tokens written to :root at boot — this is the whole re-skin surface */
