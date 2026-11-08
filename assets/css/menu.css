@@ -23,46 +23,50 @@
 
 /* --- montagem do hambúrguer ---------------------------------------------
    Palco de proporção fixa: a altura é reservada antes das fotos chegarem,
-   então a montagem nunca empurra o cardápio para baixo. O recorte esconde
-   as camadas enquanto elas estão fora de cena. */
+   então a montagem nunca empurra o cardápio para baixo. Cada camada nasce
+   dentro do palco, na altura que --y define, para não entrar em cena cortada
+   pela borda; o recorte fica só como rede de segurança. */
 .build {
   position: relative; overflow: hidden;
-  width: min(232px, 64%); margin: 0 auto var(--s-3);
-  aspect-ratio: 720 / 840;
+  width: min(268px, 76%); margin: 0 auto var(--s-3);
+  aspect-ratio: 720 / 640;
 }
 .build--hold { visibility: hidden; }            /* reserva de espaço no shell estático */
 
 .build-floor {
-  position: absolute; left: 50%; bottom: 1%; width: 76%; height: 7%;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.6), transparent 72%);
+  position: absolute; left: 50%; bottom: 1%; width: 72%; height: 8%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.62), transparent 72%);
   filter: blur(5px);
   transform: translate3d(-50%, 0, 0) scaleX(0.3); opacity: 0;
 }
 .bl {
   position: absolute; left: 50%; bottom: var(--b); width: var(--w);
-  height: auto; transform-origin: 50% 100%;
-  transform: translate3d(-50%, -270%, 0);
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+  height: auto; transform-origin: 50% 100%; opacity: 0;
+  transform: translate3d(-50%, var(--y), 0);
+  filter: drop-shadow(0 5px 9px rgba(0, 0, 0, 0.45));
 }
 .build.is-on .bl {
-  will-change: transform;
-  animation: bl-drop 720ms linear both;
-  animation-delay: calc(var(--i) * 115ms);
+  will-change: transform, opacity;
+  animation: bl-drop 700ms linear both, bl-fade 170ms linear both;
+  animation-delay: calc(var(--i) * 95ms);
 }
-.build.is-on .build-floor { animation: bl-floor 560ms ease-out both; animation-delay: 400ms; }
+.build.is-on .build-floor { animation: bl-floor 560ms ease-out both; animation-delay: 380ms; }
 
-/* cada camada cai com gravidade, amassa ao encostar e devolve o impacto */
+/* cai com gravidade, amassa ao encostar e devolve o impacto */
 @keyframes bl-drop {
-  0%   { transform: translate3d(-50%, -270%, 0) scaleY(1);
-         animation-timing-function: cubic-bezier(0.5, 0, 0.78, 0.3); }
-  58%  { transform: translate3d(-50%, 0, 0) scaleY(1);
-         animation-timing-function: cubic-bezier(0.3, 0, 0.25, 1); }
-  70%  { transform: translate3d(-50%, 0, 0) scaleY(0.9);
-         animation-timing-function: cubic-bezier(0.2, 0.6, 0.3, 1); }
-  83%  { transform: translate3d(-50%, -7%, 0) scaleY(1.035); }
-  93%  { transform: translate3d(-50%, 0, 0) scaleY(0.985); }
+  0%   { transform: translate3d(-50%, var(--y), 0) scaleY(1);
+         animation-timing-function: cubic-bezier(0.45, 0, 0.75, 0.32); }
+  56%  { transform: translate3d(-50%, 0, 0) scaleY(1);
+         animation-timing-function: cubic-bezier(0.32, 0, 0.26, 1); }
+  68%  { transform: translate3d(-50%, 0, 0) scaleY(0.9);
+         animation-timing-function: cubic-bezier(0.2, 0.62, 0.3, 1); }
+  82%  { transform: translate3d(-50%, -6%, 0) scaleY(1.03); }
+  92%  { transform: translate3d(-50%, 0, 0) scaleY(0.99); }
   100% { transform: translate3d(-50%, 0, 0) scaleY(1); }
 }
+/* aparece junto com a queda: sem isso as camadas ficariam paradas no ar
+   esperando a vez durante o atraso de cada uma */
+@keyframes bl-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes bl-floor {
   0%   { transform: translate3d(-50%, 0, 0) scaleX(0.3); opacity: 0; }
   100% { transform: translate3d(-50%, 0, 0) scaleX(1); opacity: 1; }
@@ -70,11 +74,10 @@
 
 /* sem animação: a montagem já aparece pronta */
 @media (prefers-reduced-motion: reduce) {
-  .bl { transform: translate3d(-50%, 0, 0); }
+  .bl { transform: translate3d(-50%, 0, 0); opacity: 1; }
   .build-floor { transform: translate3d(-50%, 0, 0) scaleX(1); opacity: 1; }
   .build.is-on .bl, .build.is-on .build-floor { animation: none; }
 }
-
 /* the wordmark lockup is the h1 — the brand is the page's first heading */
 .lockup { margin: 0; line-height: 0; }
 .lockup img { display: block; width: 100%; max-width: 228px; height: auto; margin: 0 auto; }

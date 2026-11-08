@@ -96,7 +96,7 @@ function buildStage() {
   <div class="build" id="build" aria-hidden="true">
     <span class="build-floor"></span>
     ${layers.map((l, i) => `<img class="bl" src="${esc(l.src)}" alt=""
-      style="--w:${l.w}%;--b:${l.b}%;--i:${i}"
+      style="--w:${l.w}%;--b:${l.b}%;--y:-${l.y ?? 60}%;--i:${i}"
       decoding="async" fetchpriority="${i < 2 ? 'high' : 'low'}">`).join('')}
   </div>`;
 }
