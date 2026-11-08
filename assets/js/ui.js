@@ -102,7 +102,10 @@ export function sheet({ title = '', body = '', foot = '', onMount, onClose, labe
   document.addEventListener('keydown', onKey);
 
   scrim.addEventListener('click', close);
-  el.querySelector('[data-close]')?.addEventListener('click', close);
+  /* delegado: a folha costuma ter mais de um [data-close] (o X no topo e o
+     botão no rodapé) e alguns nascem depois, quando o conteúdo é redesenhado.
+     querySelector pegava só o primeiro, então o botão de baixo não fechava. */
+  el.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) close(); });
 
   /* drag to dismiss: velocity OR travel, with damping above the top edge */
   const grab = el.querySelector('[data-grab]');

@@ -44,6 +44,25 @@ function fresh() {
   return { ...deepClone(SEED), orders: [], seq: 1 };
 }
 
+/* Um estado salvo foi gravado com a versão do SEED daquele dia. Quando o
+   produto ganha um campo novo (uma animação, um bloco de configuração), quem
+   já mexeu no painel ficaria sem ele para sempre — e sem nenhum sinal disso.
+   Esta função só preenche o que está faltando: nunca sobrescreve um valor que
+   o operador definiu, e não entra em listas (o cardápio é dele, não do SEED). */
+function fillGaps(saved, seed) {
+  if (!saved || typeof saved !== 'object') return saved;
+  for (const k of Object.keys(seed)) {
+    const sv = seed[k];
+    if (saved[k] === undefined) {
+      saved[k] = deepClone(sv);
+    } else if (isPlain(sv) && isPlain(saved[k])) {
+      fillGaps(saved[k], sv);
+    }
+  }
+  return saved;
+}
+const isPlain = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+
 export async function init() {
   /* DEV ONLY: ?data=worst|empty|one|huge loads a stress fixture.
      Dynamic import, so a real visitor never fetches the file. */
@@ -59,6 +78,7 @@ export async function init() {
     } catch (e) { console.warn('fixture não carregou', e); }
   }
   state = (await driver.load()) || fresh();
+  fillGaps(state, SEED);
   if (!Array.isArray(state.orders)) state.orders = [];
   return state;
 }
