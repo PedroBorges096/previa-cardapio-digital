@@ -1,0 +1,22 @@
+/* Archivo for voice and text — a confident grotesque that stands next to the
+   rounded BRASA wordmark without competing with it. Overpass Mono for figures:
+   prices, quantities and the running total need column alignment.
+   Self-hosted: no third-party connection on a weak mobile link. SIL OFL 1.1. */
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;        /* one variable file covers the whole scale */
+  font-display: swap;
+  src: url("../../assets/fonts/archivo-var.woff2") format("woff2-variations");
+}
+@font-face {
+  font-family: "Overpass Mono";
+  font-style: normal; font-weight: 500; font-display: swap;
+  src: url("../../assets/fonts/overpass-mono-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Overpass Mono";
+  font-style: normal; font-weight: 600; font-display: swap;
+  src: url("../../assets/fonts/overpass-mono-600.woff2") format("woff2");
+}

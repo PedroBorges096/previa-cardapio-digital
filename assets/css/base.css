@@ -1,0 +1,365 @@
+/* ==========================================================================
+   KM 7 — base: platform layer, type, and the shared sign-hardware primitives
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  /* platform layer — none of this reproduces in desktop device emulation */
+  -webkit-tap-highlight-color: transparent;   /* kill the grey flash on tap */
+  -webkit-text-size-adjust: 100%;             /* no font inflation in landscape */
+  overscroll-behavior: none;                  /* no pull-to-refresh hijack */
+  background: var(--surface-0);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background:
+    radial-gradient(120% 58% at 50% -10%, rgba(200, 121, 67, 0.13), transparent 64%),
+    var(--surface-0);
+  color: var(--text-1);
+  font-family: var(--font-text);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- browser surfaces: the parts we did not draw still carry the design --- */
+::selection { background: rgba(200, 121, 67, 0.34); color: var(--text-1); }
+:root { accent-color: var(--accent); caret-color: var(--accent-2); }
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+  border-radius: var(--r-1);
+}
+:focus:not(:focus-visible) { outline: none; }
+a { color: var(--accent-2); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+
+/* --- figures always align in columns ------------------------------------- */
+.fig, .price, output, td.num, .qty-val, .row-price .now, .row-price .was,
+.hours-row .t, .ci-foot .price, .sumrow .v, .ps-price .now, .ps-price .was {
+  font-family: var(--font-figure);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.035em;
+  word-spacing: -0.14em;   /* the NBSP after R$ is very wide in mono */
+}
+
+/* --- type ---------------------------------------------------------------- */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  margin: 0;
+  line-height: 1.08;
+  text-wrap: balance;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+}
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-2); }
+h3 { font-size: var(--step-1); }
+p { margin: 0; max-width: var(--measure); text-wrap: pretty; }
+
+.legend {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.muted { color: var(--text-2); }
+.sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --- the enamel plate ---------------------------------------------------- */
+.plate {
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-1), var(--plate-top);
+}
+.plate--reflective { border-color: var(--line-2); border-width: 2px; }
+
+/* rivets: four bone dots. Three places on the whole site, not every card. */
+.riveted { position: relative; }
+.riveted::before, .riveted::after {
+  content: ""; position: absolute; top: 7px; width: 3px; height: 3px;
+  border-radius: var(--r-round); background: var(--rivet);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+.riveted::before { left: 7px; }
+.riveted::after { right: 7px; }
+.riveted > .rivets-b::before, .riveted > .rivets-b::after {
+  content: ""; position: absolute; bottom: 7px; width: 3px; height: 3px;
+  border-radius: var(--r-round); background: var(--rivet);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+.riveted > .rivets-b::before { left: 7px; }
+.riveted > .rivets-b::after { right: 7px; }
+
+/* the road: the one decorative element, and it is the center line */
+.centerline {
+  height: 4px; border: 0; margin: var(--s-6) 0; border-radius: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0 28px,
+    transparent 28px 50px
+  );
+  opacity: 0.5;
+}
+
+/* --- controls ------------------------------------------------------------ */
+button, [role="button"], a.btn, label.tap, .chip, .tab {
+  touch-action: manipulation;     /* no 300ms double-tap-zoom wait */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;    /* no long-press callout on controls */
+}
+
+.btn {
+  text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--s-2);
+  min-height: var(--tap); padding: 0 var(--s-5);
+  font-family: var(--font-display); font-size: var(--step-0); font-weight: 800;
+  letter-spacing: 0.01em;
+  border-radius: var(--r-round); border: 1px solid transparent;
+  background: var(--surface-2); color: var(--text-1);
+  cursor: pointer;
+  transition: transform var(--t-press) var(--ease-out),
+              background var(--t-fast) ease,
+              border-color var(--t-fast) ease,
+              opacity var(--t-fast) ease;
+}
+.btn:active { transform: scale(0.97); }
+.btn--primary {
+  background: var(--accent); color: var(--ink);
+  box-shadow: var(--shadow-1);
+}
+.btn--ghost { background: transparent; border-color: var(--line-2); color: var(--text-1); }
+.btn--quiet { background: transparent; border-color: transparent; color: var(--text-2); }
+.btn--danger { background: transparent; border-color: rgba(240,138,122,.4); color: var(--alert-text); }
+.btn--danger-solid { background: var(--alert-deep); color: var(--text-1); }
+.btn--block { width: 100%; }
+.btn--lg { min-height: 54px; font-size: var(--step-1); padding: 0 var(--s-6); }
+.btn[disabled], .btn[aria-disabled="true"] {
+  opacity: 0.45; cursor: not-allowed; transform: none;
+}
+.btn[disabled]:active { transform: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover:not([disabled]):not([aria-disabled="true"]) { background: var(--surface-3); }
+  .btn--primary:hover:not([disabled]) { background: var(--accent-2); }
+  .btn--ghost:hover { background: rgba(244,232,212,.06); }
+  .btn--danger:hover { background: rgba(123,41,37,.3); }
+}
+
+.icon { width: 20px; height: 20px; flex: none; display: block; }
+.icon--sm { width: 16px; height: 16px; }
+.icon--lg { width: 24px; height: 24px; }
+
+/* --- badges: state never rides on colour alone --------------------------- */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--font-display); font-size: 0.6875rem; font-weight: 800;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 4px 9px; border-radius: var(--r-round);
+  background: var(--surface-0); color: var(--text-2);
+  border: 1px solid transparent;
+}
+.badge--promo { background: var(--accent); color: var(--ink); }
+.badge--top { background: var(--surface-0); color: var(--accent-2); }
+.badge--new { background: var(--surface-0); color: var(--text-1); }
+.badge--out { background: var(--alert); color: var(--text-1); }
+
+/* --- fields -------------------------------------------------------------- */
+.field { display: block; }
+.field > .lbl {
+  display: block; margin-bottom: 6px;
+  font-family: var(--font-display); font-size: var(--step--1); font-weight: 700;
+  color: var(--text-2);
+}
+.input, .select, .textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px var(--s-4);
+  font-family: var(--font-text);
+  font-size: 16px;                 /* 16px floor: anything less zooms iOS Safari */
+  line-height: 1.4;
+  color: var(--text-1);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  transition: border-color var(--t-fast) ease, background var(--t-fast) ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.textarea { min-height: 76px; resize: vertical; line-height: 1.5; }
+.select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B7C8B9' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+  padding-right: 36px;
+}
+.input::placeholder, .textarea::placeholder { color: var(--text-3); opacity: 1; }
+.input:focus, .select:focus, .textarea:focus { border-color: var(--accent-2); background: var(--surface-3); }
+.input[aria-invalid="true"], .textarea[aria-invalid="true"], .select[aria-invalid="true"] {
+  border-color: var(--alert-text);
+}
+.err {
+  display: flex; align-items: center; gap: 5px;
+  margin-top: 5px; font-size: var(--step--1); color: var(--alert-text);
+}
+.err:empty { display: none; }
+
+/* --- choice rows (variations, add-ons, payment) --------------------------- */
+.choice {
+  display: flex; align-items: center; gap: var(--s-3);
+  min-height: 54px; padding: var(--s-2) var(--s-4);
+  border: 1px solid var(--line); border-radius: var(--r-3);
+  background: var(--surface-1);
+  cursor: pointer;
+  transition: border-color var(--t-fast) ease, background var(--t-fast) ease;
+}
+.choice:has(input:checked) { border-color: var(--accent-2); background: var(--surface-2); }
+.choice:has(input:disabled) { opacity: 0.44; cursor: not-allowed; }
+.choice input { width: 20px; height: 20px; flex: none; margin: 0; }
+.choice .ch-name { flex: 1; min-width: 0; }
+.choice .ch-price { color: var(--text-2); font-size: var(--step--1); }
+.choice:active:not(:has(input:disabled)) { transform: scale(0.99); }
+
+/* --- skeleton ------------------------------------------------------------ */
+.sk {
+  position: relative; overflow: hidden;
+  background: var(--surface-2); border-radius: var(--r-2);
+}
+.sk::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(244,232,212,.07), transparent);
+  transform: translateX(-100%);
+  animation: sk 1.1s linear infinite;
+}
+@keyframes sk { to { transform: translateX(100%); } }
+
+/* --- toast: enters from the edge it can be swiped off -------------------- */
+.toaster {
+  position: fixed; left: 0; right: 0;
+  bottom: calc(var(--safe-b) + 92px);
+  z-index: 70;
+  display: grid; gap: var(--s-2);
+  padding: 0 var(--s-4);
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  max-width: var(--page); margin: 0 auto; width: 100%;
+  display: flex; align-items: center; gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-3);
+  font-size: var(--step-0);
+  transition: transform 300ms var(--ease-out), opacity 220ms ease;
+}
+.toast[data-enter] { transform: translateY(14px); opacity: 0; }
+.toast[data-leave] { transform: translateY(8px); opacity: 0; }
+.toast .icon { color: var(--accent-2); }
+.toast--err .icon { color: var(--alert-text); }
+
+/* --- sheet --------------------------------------------------------------- */
+.scrim {
+  position: fixed; inset: 0; z-index: 80;
+  background: rgba(8, 6, 5, 0.72);
+  opacity: 0;
+  transition: opacity var(--t-mid) ease;
+}
+.scrim[data-visible] { opacity: 1; }
+
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 81;
+  max-width: var(--page); margin: 0 auto;
+  max-height: 92dvh;
+  display: flex; flex-direction: column;
+  background: var(--surface-1);
+  border: 1px solid var(--line-2);
+  border-bottom: 0;
+  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+  box-shadow: var(--shadow-3);
+  transform: translateY(100%);
+  transition: transform var(--t-sheet) var(--ease-drawer);
+  will-change: transform;
+}
+.sheet[data-visible] { transform: translateY(0); }
+.sheet[data-closing] { transition-duration: 220ms; }
+.sheet-grab {
+  flex: none; padding: var(--s-2) 0 var(--s-1);
+  display: grid; place-items: center;
+  touch-action: pan-x;  /* the sheet owns vertical drags, browser keeps horizontal */
+  cursor: grab;
+}
+.sheet-grab span {
+  display: block; width: 38px; height: 4px; border-radius: 2px;
+  background: var(--line-2);
+}
+.sheet-body {
+  overflow-y: auto;
+  overscroll-behavior: contain;  /* keep the bounce, stop the page behind moving */
+  -webkit-overflow-scrolling: touch;
+  padding: 0 var(--s-4) var(--s-4);
+}
+.sheet-foot {
+  flex: none;
+  padding: var(--s-3) var(--s-4) calc(var(--s-3) + var(--safe-b));
+  border-top: 1px solid var(--line);
+  background: var(--surface-1);
+  display: grid; gap: var(--s-2);
+}
+.sheet-head {
+  flex: none; display: flex; align-items: flex-start; gap: var(--s-3);
+  padding: 0 var(--s-4) var(--s-3);
+}
+.sheet-head h2 { flex: 1; min-width: 0; text-align: center; padding-left: var(--tap); }
+.sheet-body { padding-top: 0; }
+.x {
+  width: var(--tap); height: var(--tap); margin: -10px -10px 0 0;
+  display: grid; place-items: center;
+  background: transparent; border: 0; border-radius: var(--r-round);
+  color: var(--text-2); cursor: pointer;
+  transition: transform var(--t-press) var(--ease-out), background var(--t-fast) ease;
+}
+.x:active { transform: scale(0.92); }
+
+/* --- empty states -------------------------------------------------------- */
+.empty {
+  display: grid; place-items: center; gap: var(--s-3);
+  padding: var(--s-10) var(--s-5);
+  text-align: center;
+}
+.empty .icon { width: 34px; height: 34px; color: var(--text-3); }
+.empty h3 { font-size: var(--step-1); }
+.empty p { color: var(--text-2); font-size: var(--step-0); max-width: 34ch; }
+
+/* --- scrollbar on the rails --------------------------------------------- */
+.rail { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+.rail::-webkit-scrollbar { height: 3px; }
+.rail::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 2px; }
+.rail::-webkit-scrollbar-track { background: transparent; }
+
+/* --- motion off ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .sheet { transition: none; }
+  .btn:active, .x:active, .choice:active { transform: none; }
+}

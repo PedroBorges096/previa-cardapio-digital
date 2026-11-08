@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>BRASA Burger House — cardápio e pedidos pelo WhatsApp</title>
+<meta name="description" content="Smash de 160 g prensado na chapa, batata frita na hora e combos. Peça pelo cardápio digital da BRASA e receba em casa ou retire no balcão.">
+<link rel="canonical" href="https://brasa.example/">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#171717">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#171717">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BRASA">
+<meta name="format-detection" content="telephone=no">
+
+<meta property="og:type" content="restaurant.restaurant">
+<meta property="og:site_name" content="BRASA Burger House">
+<meta property="og:title" content="BRASA Burger House — smashed with attitude">
+<meta property="og:description" content="Smash de 160 g na chapa, cheddar derretido e batata frita na hora. Peça pelo WhatsApp em dois toques.">
+<meta property="og:image" content="assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/img/icon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+
+<link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/img/logo-brasa.png" as="image" fetchpriority="high">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/menu.css">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Restaurant","name":"BRASA Burger House",
+"servesCuisine":"Hambúrguer","priceRange":"$$","image":"assets/img/og.jpg",
+"address":{"@type":"PostalAddress","streetAddress":"Rua da Chapa, 220","addressLocality":"São Paulo","addressRegion":"SP","postalCode":"03120-000","addressCountry":"BR"},
+"openingHoursSpecification":[
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday"],"opens":"18:00","closes":"23:30"},
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"18:00","closes":"01:00"},
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Sunday"],"opens":"18:00","closes":"23:00"}],
+"hasMenu":{"@type":"Menu","name":"Cardápio BRASA"}}
+</script>
+</head>
+<body>
+<a class="sr" href="#cardapio">Pular para o cardápio</a>
+
+<main class="wrap" id="app">
+  <!-- static shell: the structure is on screen before the module finishes loading -->
+  <header class="signboard" id="signboard">
+    <div class="sign-top">
+      <img class="brandmark" src="assets/img/logo-brasa.png" alt="BRASA Burger House"
+        width="620" height="290" fetchpriority="high">
+      <div class="sign-id">
+        <span class="kicker">Burger House</span>
+        <span class="tag">Smashed with attitude.</span>
+      </div>
+    </div>
+    <div class="sk" style="height:18px;width:70%;margin-top:14px"></div>
+    <div class="sk" style="height:28px;width:46%;margin-top:12px"></div>
+  </header>
+
+  <div id="main-slot">
+    <div class="rows" aria-hidden="true">
+      <div class="sk-row"><div class="sk sk-art"></div><div class="sk-lines">
+        <div class="sk" style="height:17px;width:58%"></div><div class="sk" style="height:13px;width:90%"></div>
+        <div class="sk" style="height:13px;width:72%"></div><div class="sk" style="height:17px;width:34%;margin-top:4px"></div></div></div>
+      <div class="sk-row"><div class="sk sk-art"></div><div class="sk-lines">
+        <div class="sk" style="height:17px;width:44%"></div><div class="sk" style="height:13px;width:86%"></div>
+        <div class="sk" style="height:13px;width:64%"></div><div class="sk" style="height:17px;width:30%;margin-top:4px"></div></div></div>
+      <div class="sk-row"><div class="sk sk-art"></div><div class="sk-lines">
+        <div class="sk" style="height:17px;width:52%"></div><div class="sk" style="height:13px;width:80%"></div>
+        <div class="sk" style="height:13px;width:58%"></div><div class="sk" style="height:17px;width:32%;margin-top:4px"></div></div></div>
+    </div>
+  </div>
+</main>
+
+<noscript>
+  <div class="wrap" style="padding-bottom:3rem">
+    <div class="notice notice--warn" style="margin-top:1rem">
+      <div>
+        <b>O cardápio interativo precisa de JavaScript.</b>
+        <p style="margin-top:.4rem">Para pedir agora, chame a gente direto no WhatsApp
+        <a href="https://api.whatsapp.com/send?phone=5511999999999">(11) 99999-9999</a>
+        ou ligue para o balcão. Funcionamento: terça a domingo, a partir das 18h.</p>
+      </div>
+    </div>
+  </div>
+</noscript>
+
+<button class="totop" id="totop" type="button" aria-label="Voltar ao topo">
+  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19.2V5.4M6 11.2l6-5.8 6 5.8"/></svg>
+</button>
+
+<div class="cartbar" id="cartbar" hidden>
+  <div class="cartbar-in">
+    <div class="meta">
+      <span class="k" id="cart-count">Sacola vazia</span>
+      <span class="odo" id="cart-total" aria-live="polite">R$ 0,00</span>
+    </div>
+    <button class="btn btn--primary btn--lg" id="open-cart" type="button">Ver sacola</button>
+  </div>
+</div>
+
+<script type="module" src="assets/js/menu.js"></script>
+</body>
+</html>

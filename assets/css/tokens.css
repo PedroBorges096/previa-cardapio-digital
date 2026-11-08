@@ -1,0 +1,95 @@
+/* ==========================================================================
+   BRASA — tokens
+   The only file in the project allowed to contain a literal colour.
+   The four brand colours (#171717 #F4E8D4 #C87943 #7B2925) come from the
+   client's identity board; everything below is derived from them.
+   A re-skin replaces the values here (or config.theme writes over them at
+   boot). Components read role tokens only — never a hex, never a colour name.
+   ========================================================================== */
+
+:root {
+  /* --- surfaces: the brand near-black, warmed as it lifts ---------------- */
+  --surface-0: #171717;   /* brand */
+  --surface-1: #211F1D;
+  --surface-2: #2C2824;
+  --surface-3: #3A342E;
+  --ink: #171717;         /* brand — type on top of the accent */
+
+  /* --- type ------------------------------------------------------------- */
+  --text-1: #F4E8D4;      /* brand cream */
+  --text-2: #C3B6A3;
+  --text-3: #9C9080;      /* tertiary: good to surface-2, never on surface-3 */
+
+  /* --- signal ----------------------------------------------------------- */
+  --accent: #C87943;      /* brand copper — fills, the one primary action */
+  --accent-2: #E0945C;    /* the copper you are allowed to set type in */
+  --alert: #7B2925;       /* brand red — fills only */
+  --alert-text: #E78477;  /* the red you are allowed to set type in */
+  --alert-deep: #5C1C19;  /* destructive fill, cream legend on top */
+  --ok: #9DBE7A;          /* open / confirmed — the one cool note, kept olive so it
+                             sits with the warm palette instead of fighting it */
+  --ok-bg: rgba(157, 190, 122, 0.14);
+  --ok-line: rgba(157, 190, 122, 0.42);
+
+  /* --- edges ------------------------------------------------------------ */
+  --line: rgba(244, 232, 212, 0.12);
+  --line-2: rgba(244, 232, 212, 0.26);
+
+  /* --- fallback drawing (only when a product has no photograph) ---------- */
+  --art-grill: #4A2A1C;
+  --art-grill-2: #6B3F2A;
+  --art-leaf: #7A9A4A;
+  --art-cheese: #E8A62E;
+  --art-tomato: #B23A2A;
+  --art-cream: #F4E8D4;
+  --art-bun: #E09A3C;
+  --art-bun-2: #C87943;
+
+  /* --- type ------------------------------------------------------------- */
+  --font-display: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-text: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-figure: "Overpass Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 0.9375rem;
+  --step-1: 1.0625rem;
+  --step-2: 1.3125rem;
+  --step-3: 1.75rem;
+  --step-4: 2.375rem;
+  --step-5: 3.25rem;
+  --measure: 68ch;
+
+  /* --- space (4px base) -------------------------------------------------- */
+  --s-1: 0.25rem; --s-2: 0.5rem; --s-3: 0.75rem; --s-4: 1rem; --s-5: 1.25rem;
+  --s-6: 1.5rem; --s-8: 2rem; --s-10: 2.5rem; --s-12: 3rem; --s-16: 4rem;
+
+  /* --- radii: soft like the logo's lettering, not pill-round ------------- */
+  --r-1: 6px; --r-2: 12px; --r-3: 18px; --r-4: 24px; --r-sheet: 28px; --r-round: 999px;
+  --r-photo: 18px;
+
+  /* Studio photographs are shot on white, so they sit in a white tile: the
+     photo's own background becomes the tile and the seam disappears.
+     Swap for the brand cream (#F4E8D4) if you prefer a warmer catalogue. */
+  --photo-bg: #FFFFFF;
+
+  /* --- depth: offset + blur, never a zero-offset halo -------------------- */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 2px 4px rgba(0, 0, 0, 0.46), 0 8px 20px rgba(0, 0, 0, 0.4);
+  --shadow-3: 0 4px 10px rgba(0, 0, 0, 0.5), 0 18px 44px rgba(0, 0, 0, 0.5);
+  --plate-top: inset 0 1px 0 rgba(244, 232, 212, 0.06);
+  /* cut-out photographs need their own ground shadow, since we removed theirs */
+  --photo-shadow: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.55));
+
+  /* --- motion ----------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --t-press: 120ms; --t-fast: 160ms; --t-mid: 220ms; --t-sheet: 340ms; --t-odo: 420ms;
+
+  /* --- layout ------------------------------------------------------------ */
+  --page: 540px;
+  --page-wide: 1120px;
+  --tap: 44px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
