@@ -28,8 +28,8 @@
    pela borda; o recorte fica só como rede de segurança. */
 .build {
   position: relative; overflow: hidden;
-  width: min(268px, 76%); margin: 0 auto var(--s-3);
-  aspect-ratio: 720 / 640;
+  width: min(238px, 68%); margin: 0 auto var(--s-3);
+  aspect-ratio: 720 / 920;
 }
 .build--hold { visibility: hidden; }            /* reserva de espaço no shell estático */
 

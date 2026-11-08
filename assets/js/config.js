@@ -42,15 +42,12 @@ export const SEED = {
        tem o seu limite: acima dele a peça começaria fora do palco e entraria
        em cena cortada ao meio — foi o que acontecia com o pão de cima. */
     build: [
-      { src: 'assets/img/build/bun-b.webp',   w: 75.4, b: 0.0,  y: 135, alt: 'pão de baixo' },
-      { src: 'assets/img/build/sauce-b.webp', w: 65.3, b: 9.7,  y: 135, alt: 'maionese da casa' },
-      { src: 'assets/img/build/onion.webp',   w: 76.2, b: 11.9, y: 135, alt: 'cebola roxa' },
-      { src: 'assets/img/build/tomato.webp',  w: 76.2, b: 15.0, y: 135, alt: 'tomate' },
-      { src: 'assets/img/build/lettuce.webp', w: 86.0, b: 18.1, y: 135, alt: 'alface americana' },
-      { src: 'assets/img/build/patty.webp',   w: 77.1, b: 21.6, y: 135, alt: 'smash de 160 g' },
-      { src: 'assets/img/build/cheese.webp',  w: 75.7, b: 31.9, y: 135, alt: 'cheddar' },
-      { src: 'assets/img/build/sauce-t.webp', w: 59.7, b: 35.9, y: 122, alt: 'maionese da casa' },
-      { src: 'assets/img/build/bun-t.webp',   w: 76.5, b: 38.1, y: 68,  alt: 'pão de cima' },
+      { src: 'assets/img/build/bun-b.webp',  w: 90.0, b: 1.1,  y: 140, alt: 'pão de baixo' },
+      { src: 'assets/img/build/sauce.webp',  w: 70.0, b: 13.3, y: 140, alt: 'maionese da casa' },
+      { src: 'assets/img/build/patty.webp',  w: 92.5, b: 14.6, y: 111, alt: 'smash de 160 g' },
+      { src: 'assets/img/build/cheese.webp', w: 93.1, b: 17.6, y: 117, alt: 'cheddar' },
+      { src: 'assets/img/build/salad.webp',  w: 87.5, b: 33.9, y: 113, alt: 'alface e tomate' },
+      { src: 'assets/img/build/bun-t.webp',  w: 85.0, b: 38.3, y: 45,  alt: 'pão de cima' },
     ],
   },
 
