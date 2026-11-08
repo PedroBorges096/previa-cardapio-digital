@@ -993,6 +993,7 @@ function openInfo(route) {
   sheet({
     title: 'Informações',
     body: `
+      <div class="infodoc">
       <span class="status ${st.open ? 'status--open' : 'status--closed'}" style="margin-top:0">
         <span class="dot"></span>${st.open ? `Aberto${st.closesAt ? ` até ${st.closesAt}` : ''}` : 'Fechado agora'}</span>
       <p class="ps-desc" style="margin-top:1rem">${esc(S.brand.about)}</p>
@@ -1015,7 +1016,7 @@ function openInfo(route) {
       <div class="group"><div class="group-h"><h3>Entrega</h3></div>
         <ul style="list-style:none;padding:0;margin:0;display:grid;gap:6px">
           ${S.service.districts.map((d) => `<li class="hours-row">
-            <span class="d" style="width:auto;flex:1">${esc(d.name)}</span>
+            <span class="d">${esc(d.name)}</span>
             <span class="t">${d.fee ? brl(d.fee) : 'grátis'}</span></li>`).join('')}
         </ul>
         <p style="margin-top:.6rem;font-size:var(--step--1);color:var(--text-3)">
@@ -1037,6 +1038,7 @@ function openInfo(route) {
           <a href="https://instagram.com/${esc(S.contact.instagram)}" target="_blank" rel="noopener" aria-label="Instagram">${icon('instagram', 'icon')}</a>
           <a href="tel:${esc(onlyDigits(S.contact.phone))}" aria-label="Telefone">${icon('phone', 'icon')}</a>
         </div>
+      </div>
       </div>`,
     foot: `<button class="btn btn--ghost btn--block" type="button" data-close>Fechar</button>`,
     onClose: () => leaveRoute(route),

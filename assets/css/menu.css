@@ -114,12 +114,14 @@
 .status--open .dot { animation: pulse 2.4s var(--ease-in-out) infinite; }
 @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
 
+/* os dados da casa acompanham o resto da placa: tudo centrado, quebrando em
+   mais linhas quando a tela é estreita, em vez de colunas coladas à esquerda */
 .sign-facts {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(154px, 1fr)); gap: 6px var(--s-3);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px var(--s-5);
   margin-top: var(--s-3); padding-top: var(--s-3);
   border-top: 1px solid var(--line);
 }
-.sign-facts .fact:last-child { grid-column: 1 / -1; }
+.sign-facts .fact:last-child { flex: 1 0 100%; justify-content: center; }
 .fact {
   display: inline-flex; align-items: center; gap: 6px; min-width: 0;
   font-size: var(--step--1); color: var(--text-2); overflow-wrap: anywhere;
@@ -490,6 +492,12 @@ body[data-cart] .totop { bottom: calc(var(--safe-b) + 92px); }
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
 }
 
+/* a página de informações segue o mesmo eixo central da placa e do rodapé */
+.infodoc { text-align: center; }
+.infodoc .social { justify-content: center; }
+.infodoc .group-h { justify-content: center; }
+.infodoc p { margin-inline: auto; max-width: 42ch; }
+
 /* --- footer -------------------------------------------------------------- */
 .foot { margin-top: var(--s-10); padding: var(--s-6) 0 var(--s-10); border-top: 1px solid var(--line); }
 .foot-grid { display: grid; gap: var(--s-5); }
@@ -501,14 +509,18 @@ body[data-cart] .totop { bottom: calc(var(--safe-b) + 92px); }
 .foot h3 { font-size: var(--step--1); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-bottom: var(--s-2); }
 .foot p { margin-inline: auto; }
 .social { justify-content: center; }
-.hours-row { justify-content: center; }
-.hours-row .d { width: auto; min-width: 86px; text-align: right; }
-.hours-row .t { min-width: 110px; text-align: left; }
+
 .foot p, .foot li { color: var(--text-2); font-size: var(--step-0); }
 .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
-.hours-row { display: flex; gap: var(--s-3); }
-.hours-row .d { width: 92px; flex: none; color: var(--text-2); }
-.hours-row .t { font-family: var(--font-figure); color: var(--text-1); }
+/* duas colunas de mesma largura: a divisa cai no centro exato do bloco, que
+   por sua vez é centrado — os dias alinham à direita, os horários à esquerda
+   e a linha inteira fica simétrica. Vale também para a lista de bairros. */
+.hours-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3);
+  max-width: 340px; margin-inline: auto; width: 100%;
+}
+.hours-row .d { text-align: right; color: var(--text-2); min-width: 0; overflow-wrap: anywhere; }
+.hours-row .t { text-align: left; font-family: var(--font-figure); color: var(--text-1); min-width: 0; }
 .hours-row[data-today] .d, .hours-row[data-today] .t { color: var(--accent-2); }
 .social { display: flex; gap: var(--s-2); }
 .social a {
