@@ -47,7 +47,7 @@ export const SEED = {
       { src: 'assets/img/build/patty.webp',  w: 92.5, b: 14.6, y: 111, alt: 'smash de 160 g' },
       { src: 'assets/img/build/cheese.webp', w: 93.1, b: 17.6, y: 117, alt: 'cheddar' },
       { src: 'assets/img/build/salad.webp',  w: 87.5, b: 33.9, y: 113, alt: 'alface e tomate' },
-      { src: 'assets/img/build/bun-t.webp',  w: 85.0, b: 38.3, y: 45,  alt: 'pão de cima' },
+      { src: 'assets/img/build/bun-t.webp',  w: 85.0, b: 41.3, y: 68,  alt: 'pão de cima' },
     ],
   },
 
