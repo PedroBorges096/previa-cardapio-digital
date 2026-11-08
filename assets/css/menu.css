@@ -28,8 +28,9 @@
    pela borda; o recorte fica só como rede de segurança. */
 .build {
   position: relative; overflow: hidden;
-  width: min(238px, 68%); margin: 0 auto var(--s-3);
-  aspect-ratio: 720 / 920;
+  /* acompanha a tela: cresce com a largura e para antes de dominar a placa */
+  width: min(clamp(248px, 64vw, 332px), 88%); margin: 0 auto var(--s-3);
+  aspect-ratio: 720 / 850;
 }
 .build--hold { visibility: hidden; }            /* reserva de espaço no shell estático */
 
@@ -105,8 +106,8 @@
 .status {
   display: inline-flex; align-items: center; gap: 7px;
   margin-top: var(--s-2);
-  padding: 5px 10px 5px 8px;
-  border-radius: var(--r-2);
+  padding: 6px 14px 6px 11px;
+  border-radius: var(--r-round);
   font-family: var(--font-display); font-weight: 800; font-size: var(--step--1);
   letter-spacing: 0.06em; text-transform: uppercase;
   border: 1px solid var(--line-2);
@@ -559,11 +560,43 @@ body[data-cart] .totop { bottom: calc(var(--safe-b) + 92px); }
 
 
 /* --- entrance: cards arrive in a short cascade --------------------------- */
-.js-reveal [data-reveal] { opacity: 0; transform: translateY(14px); }
+.js-reveal [data-reveal] { opacity: 0; transform: translateY(18px) scale(0.985); }
 .js-reveal [data-reveal].is-in {
   opacity: 1; transform: none;
-  transition: opacity 420ms var(--ease-out) calc(var(--i, 0) * 45ms),
-              transform 420ms var(--ease-out) calc(var(--i, 0) * 45ms);
+  transition: opacity 400ms var(--ease-out) calc(var(--i, 0) * 52ms),
+              transform 520ms var(--ease-out) calc(var(--i, 0) * 52ms);
+}
+
+/* --- polimento de movimento ---------------------------------------------
+   Tudo que o dedo toca responde na hora (120ms), e tudo que muda de estado
+   sozinho leva um pouco mais, para a mudança ser percebida sem atrasar. */
+.chip {
+  transition: background var(--t-fast) ease, color var(--t-fast) ease,
+              border-color var(--t-fast) ease, transform var(--t-press) var(--ease-out);
+}
+.chip:active { transform: scale(0.94); }
+.chips--on .chip { box-shadow: 0 2px 10px rgba(200, 121, 67, 0.28); }
+
+.hero { transition: transform var(--t-press) var(--ease-out), border-color var(--t-fast) ease; }
+.hero:active { transform: scale(0.975); }
+
+.row-add, .btn { transition: background var(--t-fast) ease, color var(--t-fast) ease,
+                             border-color var(--t-fast) ease, transform var(--t-press) var(--ease-out); }
+.btn:active { transform: scale(0.97); }
+
+/* o selo de aberto/fechado nasce com um leve avanço, como um carimbo */
+.status { animation: stamp 420ms var(--ease-out) both; }
+@keyframes stamp {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* depois de montado o lanche respira: 4px em 5s, quase imperceptível, mas
+   tira a sensação de figura colada */
+.build.is-on { animation: stage-float 5.4s var(--ease-in-out) 1.5s infinite; }
+@keyframes stage-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -4px, 0); }
 }
 
 /* the bag reacts when something lands in it */
@@ -577,6 +610,7 @@ body[data-cart] .totop { bottom: calc(var(--safe-b) + 92px); }
 @media (prefers-reduced-motion: reduce) {
   .js-reveal [data-reveal] { opacity: 1; transform: none; }
   .cartbar[data-show].bump .cartbar-in { animation: none; }
-  .row:active { transform: none; }
+  .row:active, .hero:active, .chip:active, .btn:active { transform: none; }
   .row-art img, .row:hover .row-art img, .row:active .row-art img { transform: none; }
+  .status, .build.is-on { animation: none; }
 }
